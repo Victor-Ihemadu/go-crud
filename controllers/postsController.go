@@ -76,12 +76,24 @@ func PostsUpdate(c *gin.Context) {
 
 	//Update it
 	initializers.DB.Model(&post).Updates(models.Post{
-		Body: body.Body,
 		Title: body.Title,
+		Body: body.Body,
 	})
 
 	//Respond with it.
 	c.JSON(200, gin.H{
 		"post": post,
 	})
+}
+
+func PostsDelete(c *gin.Context) {
+	//Get the id off the URL
+	id := c.Param(":id")
+
+
+	//Delete the posts
+	initializers.DB.Delete(&models.Post{}, id)
+
+	//Respond
+	c.Status(200)
 }
