@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/Victor-Ihemadu/go-crud/controllers"
 	"github.com/Victor-Ihemadu/go-crud/initializers"
 	"github.com/gin-gonic/gin"
 )
@@ -12,11 +13,7 @@ func init() {
 func main() {
 	r := gin.Default()
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	r.POST("/posts", controllers.PostsCreate)
 
 	r.Run()
 }
