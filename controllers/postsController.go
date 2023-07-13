@@ -44,13 +44,44 @@ func PostsIndex(c *gin.Context) {
 
 func PostsShow(c *gin.Context) {
 	//Get the id from the URL
+	id := c.Param("id")
+
 
 	//Get posts
-	var posts models.Post
-	initializers.DB.First(&posts, 10)
+	var post models.Post
+	initializers.DB.First(&post, id)
 
 	//Respond with them
 	c.JSON(200, gin.H{
-			"posts": posts,
+			"post": post,
 		})
+}
+
+func PostsUpdate(c *gin.Context) {
+	//Get the id off the url
+	id := c.Param(":id")
+
+	//Get the data off the req body
+	var body struct {
+		Body string
+		Title string
+	}
+
+	c.Bind(&body)
+
+
+	//Find the post we're updating
+	var post models.Post
+	initializers.DB.First(&post, id)
+
+	//Update it
+	initializers.DB.Model(&post).Updates(models.Post{
+		Body: body.Body,
+		Title: body.Title,
+	})
+
+	//Respond with it.
+	c.JSON(200, gin.H{
+		"post": post,
+	})
 }
